@@ -68,7 +68,7 @@ function showHistograms(colorMat, grayMat) {
     const histograms = document.getElementById("histograms");
     histograms.innerHTML = "";
 
-    const channels = ["Blue", "Green", "Red"];
+    const channels = ["Red", "Green", "Blue"];
     const srcVec = new cv.MatVector();
     srcVec.push_back(colorMat);
 
@@ -106,7 +106,7 @@ function drawHistogram(srcVec, channel, canvas, label) {
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, 256, 100);
 
-    // ✅ Color selection based on label
+    // Color selection based on label
     if (label === "Blue") ctx.fillStyle = "blue";
     else if (label === "Green") ctx.fillStyle = "green";
     else if (label === "Red") ctx.fillStyle = "red";
@@ -180,3 +180,4 @@ document.getElementById("downloadTransformed").onclick = () => {
     link.href = canvas.toDataURL();
     link.click();
 };
+
