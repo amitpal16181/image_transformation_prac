@@ -99,7 +99,7 @@ function drawHistogram(srcVec, channel, canvas, label) {
     let histSize = [256];
     let ranges = [0, 256];
 
-    // Proper call using MatVector
+    // Call using MatVector
     cv.calcHist(srcVec, channels, mask, hist, histSize, ranges);
 
     let result = hist.data32F;
@@ -180,4 +180,3 @@ document.getElementById("downloadTransformed").onclick = () => {
     link.href = canvas.toDataURL();
     link.click();
 };
-
