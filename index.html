@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive Image Transformer</title>
+    <link rel="stylesheet" href="style.css" />
+    <script async src="opencv.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div id="topButtons" class="top-buttons hidden">
+            <!-- <button id="separateChannels">Separate RGB Channels</button> -->
+        </div>
+
+        <div id="uploadSection">
+            <button id="uploadBtn">Upload Image</button>
+            <input type="file" id="imageInput" accept="image/*" hidden />
+        </div>
+
+        <div id="infoSection" class="hidden">
+            <img id="originalImage" />
+            <p id="imageInfo"></p>
+            <label>Enter new width: <input type="number" id="newWidthInput" /></label>
+            <button id="resizeBtn">Resize</button>
+        </div>
+
+        <div id="resizeSection" class="hidden">
+            <div class="img-row">
+                <canvas id="resizedCanvas"></canvas>
+                <canvas id="grayCanvas"></canvas>
+            </div>
+            <div class="histogram-row" id="histograms"></div>
+        </div>
+
+        <div id="transformSection" class="hidden">
+            <label>Choose transformation: </label>
+            <select id="transformSelect">
+                <option value="">--Select--</option>
+                <option value="rotate">Rotate</option>
+                <option value="scale">Scale</option>
+                <option value="translate">Translate</option>
+            </select>
+            <div id="transformInputs"></div>
+            <button id="applyTransformBtn" class="hidden">Apply Transformation</button>
+            <div id="transformResult" class="hidden">
+                <canvas id="transformedCanvas"></canvas>
+                <button id="downloadTransformed">Download Transformed Image</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js" type="module"></script>
+</body>
+
+</html>
