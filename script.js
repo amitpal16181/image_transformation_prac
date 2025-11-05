@@ -26,7 +26,7 @@ imageInput.onchange = async (e) => {
     srcMat = cv.imread(canvas);
 
     document.getElementById("originalImage").src = img.src;
-    document.getElementById("imageInfo").textContent = `Width: ${img.width}, Height: ${img.height}`;
+    document.getElementById("imageInfo").textContent = `Width: ${img.width}px, Height: ${img.height}px`;
     infoSection.classList.remove("hidden");
     topButtons.classList.remove("hidden");
     resizeSection.classList.add("hidden");
