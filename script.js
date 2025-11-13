@@ -14,6 +14,11 @@ imageInput.onchange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
+    // Clear old matrices if any
+    if (typeof srcMat !== "undefined" && srcMat) { srcMat.delete(); srcMat = null; }
+    if (typeof resizedMat !== "undefined" && resizedMat) { resizedMat.delete(); resizedMat = null; }
+    if (typeof grayMat !== "undefined" && grayMat) { grayMat.delete(); grayMat = null; }
+
     const img = new Image();
     img.src = URL.createObjectURL(file);
     await img.decode();
@@ -25,14 +30,47 @@ imageInput.onchange = async (e) => {
     ctx.drawImage(img, 0, 0);
     srcMat = cv.imread(canvas);
 
-    document.getElementById("originalImage").src = img.src;
-    document.getElementById("imageInfo").textContent = `Width: ${img.width}px, Height: ${img.height}px`;
+    // Ask user for new width
+    const newWidth = parseInt(prompt(`Original size: ${img.width}×${img.height}\nEnter new width:`));
+    if (!newWidth || isNaN(newWidth) || newWidth <= 0) {
+        alert("Invalid width. Keeping original size.");
+        cv.imshow("resizedCanvas", srcMat);
+        document.getElementById("imageInfo").textContent = `Size: ${img.width}×${img.height}`;
+        return;
+    }
+
+    // Maintain aspect ratio
+    const aspect = img.height / img.width;
+    const newHeight = Math.round(newWidth * aspect);
+
+    // Resize immediately
+    let dsize = new cv.Size(newWidth, newHeight);
+    resizedMat = new cv.Mat();
+    cv.resize(srcMat, resizedMat, dsize, 0, 0, cv.INTER_AREA);
+
+    // Display resized image
+    cv.imshow("resizedCanvas", resizedMat);
+    
+    // Temporarily set the new width input so the resize function won’t block
+    const newWidthInput = document.getElementById("newWidthInput");
+    if (newWidthInput) newWidthInput.value = newWidth;
+
+    // Now safely trigger resize logic
+    document.getElementById("resizeBtn").onclick();
+
+
+    // Update info text
+    document.getElementById("imageInfo").textContent =
+        `Resized from ${img.width}×${img.height} → ${newWidth}×${newHeight}`;
+
+    // Adjust UI visibility
     infoSection.classList.remove("hidden");
     topButtons.classList.remove("hidden");
-    resizeSection.classList.add("hidden");
-    transformSection.classList.add("hidden");
+    resizeSection.classList.remove("hidden");
+    transformSection.classList.remove("hidden");
     uploadBtn.classList.add("top-position");
 };
+
 
 document.getElementById("resizeBtn").onclick = () => {
     const newWidth = parseInt(newWidthInput.value);
